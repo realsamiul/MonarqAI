@@ -1,0 +1,374 @@
+Understood. We are pivoting from a consolidated dashboard to a multi-page, investor-focused presentation. The architecture will be redesigned to give each demonstration its own dedicated space, maximizing narrative impact and showcasing the full breadth of our capabilities.
+
+The design philosophy will be to tell a compelling story for each demo, framed for an investor audience. We will explain the problem, unveil our solution with a touch of theatricality (the "Run Demo" button), and then provide a lucid explanation of the results and their commercial value. We will leverage the full feature set of `shadcn/ui` to ensure a premium, polished user experience.
+
+Here are the comprehensive instructions for Cursor AI. This is a complete architectural build-out.
+
+-----
+
+### **Phase 1: Project Setup & Dependencies**
+
+First, we need to install a library for animations and clean up the initial template.
+
+**Instruction for Cursor AI:**
+
+> 1.  In the terminal for the `kalopathor-website` project, run the following command to install `framer-motion`, which we will use for animations:
+>
+>     ```bash
+>     npm install framer-motion
+>     ```
+>
+> 2.  Delete the entire `app/dashboard` directory from the initial template. We are creating a new, page-based routing structure.
+
+-----
+
+### **Phase 2: Staging All Data Assets**
+
+This step is unchanged but crucial. All necessary files must be in the `public` directory.
+
+**Instruction for Cursor AI:**
+
+> Ensure the `public` directory inside `kalopathor-website` contains all the essential asset files we identified previously (`.csv`, `.json`, `.png`). This is critical for the following components to function.
+
+-----
+
+### **Phase 3: Building the Global Layout & Navigation**
+
+Every page will share a common navigation bar for seamless movement between demos.
+
+**Instruction for Cursor AI:**
+
+> **1. Create the Main Navigation Component:**
+> Create a new file at `components/main-nav.tsx` and populate it with this code. This builds a sophisticated navigation menu.
+
+```tsx
+"use client";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import React from "react";
+
+const components: { title: string; href: string; description: string }[] = [
+  {
+    title: "Flood Intelligence",
+    href: "/hawkeye/floods",
+    description: "Near real-time flood mapping to reduce a 7-day process to 30 minutes.",
+  },
+  {
+    title: "Crop Intelligence",
+    href: "/hawkeye/crops",
+    description: "Discovering potential crop stress without using any pre-existing labels.",
+  },
+  {
+    title: "Urban Intelligence (Night Lights)",
+    href: "/hawkeye/nightlights",
+    description: "Using VIIRS Nighttime Light data for real-time economic activity mapping.",
+  },
+  {
+    title: "Public Health (OMEGA v2)",
+    href: "/hawkeye/disease",
+    description: "A causal discovery network for disease outbreak early warning systems.",
+  },
+];
+
+export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
+  return (
+    <nav className={cn("flex items-center space-x-4 lg:space-x-6", className)} {...props}>
+      <Link href="/" className="mr-6 flex items-center space-x-2">
+        <span className="font-bold text-lg">Kalopathor OS</span>
+      </Link>
+      <NavigationMenu>
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>Hyperion</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px]">
+                <ListItem href="/hyperion/freight" title="Freight Rate Forecasting">
+                  Predicting chaotic freight rates for the Far East → US West Coast trade lane.
+                </ListItem>
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>HawkEYE</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                {components.map((component) => (
+                  <ListItem key={component.title} title={component.title} href={component.href}>
+                    {component.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+    </nav>
+  );
+}
+
+const ListItem = React.forwardRef<React.ElementRef<"a">, React.ComponentPropsWithoutRef<"a">>(
+  ({ className, title, children, ...props }, ref) => {
+    return (
+      <li>
+        <NavigationMenuLink asChild>
+          <a
+            ref={ref}
+            className={cn(
+              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+              className
+            )}
+            {...props}
+          >
+            <div className="text-sm font-medium leading-none">{title}</div>
+            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
+          </a>
+        </NavigationMenuLink>
+      </li>
+    );
+  }
+);
+ListItem.displayName = "ListItem";
+```
+
+> **2. Update the Root Layout:**
+> Replace the content of `app/layout.tsx` with this code. It adds the header and our new navigation component to every page.
+
+```tsx
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import { ThemeProvider } from '@/components/theme-provider'
+import { MainNav } from '@/components/main-nav'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'Kalopathor Decision OS',
+  description: 'Investor Pitch Platform',
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <div className="hidden flex-col md:flex">
+            <div className="border-b">
+              <div className="flex h-16 items-center px-4">
+                <MainNav className="mx-6" />
+              </div>
+            </div>
+            <main>{children}</main>
+          </div>
+        </ThemeProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+> **3. Create a Simple Home Page:**
+> Replace the content of `app/page.tsx` with this code to create a landing page.
+
+```tsx
+export default function HomePage() {
+  return (
+    <div className="flex-1 space-y-4 p-8 pt-6">
+       <div className="flex items-center justify-between space-y-2">
+        <h2 className="text-4xl font-bold tracking-tight">Welcome to the Kalopathor Decision OS</h2>
+      </div>
+      <p className="text-muted-foreground">
+        Please use the navigation above to explore our flagship demonstrations for the Hyperion and HawkEYE engines.
+      </p>
+    </div>
+  )
+}
+```
+
+-----
+
+### **Phase 4: Building the Hyperion Freight Demo Page**
+
+This is the dedicated page for our flagship analytics demo.
+
+**Instruction for Cursor AI:**
+
+> 1.  Create the folder structure `app/hyperion/freight`.
+> 2.  Inside this folder, create a new file named `page.tsx` and populate it with the following code.
+
+```tsx
+"use client";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { motion, AnimatePresence } from 'framer-motion';
+import { Info, LineChart as ChartIcon, FileText, Database, Sliders, BrainCircuit } from 'lucide-react';
+
+// NOTE: This combines all the Hyperion components into a single file for simplicity.
+// In a larger app, you'd keep them separate as we planned before.
+import { useEffect } from 'react';
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Tooltip as RechartsTooltip } from 'recharts';
+
+// --- Reusable Chart Component ---
+interface ForecastData { date: string; actual: number | null; predicted: number | null; confidence_low: number | null; confidence_high: number | null; }
+interface ChartProps { dataUrl: string; }
+function ParameterizedFreightChart({ dataUrl }: ChartProps) {
+  const [data, setData] = useState<ForecastData[]>([]);
+  useEffect(() => {
+    fetch(dataUrl).then(response => response.ok ? response.text() : Promise.reject('File not found'))
+      .then(csvText => {
+        const lines = csvText.trim().split('\n'); const headers = lines[0].split(',').map(h => h.trim());
+        const chartData = lines.slice(1).map(line => {
+          const values = line.split(','); const entry: any = {};
+          headers.forEach((header, index) => { const value = parseFloat(values[index]); entry[header] = isNaN(value) ? (values[index] || null) : value; });
+          return { date: entry.date, actual: entry.actual, predicted: entry.predicted, confidence_low: entry.confidence_low, confidence_high: entry.confidence_high, };
+        });
+        setData(chartData);
+      });
+  }, [dataUrl]);
+  if (data.length === 0) return <p>Loading forecast data...</p>;
+  return (
+    <ResponsiveContainer width="100%" height={350}>
+      <AreaChart data={data}>
+        <defs>
+          <linearGradient id="colorPredicted" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/><stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0.1}/></linearGradient>
+          <linearGradient id="colorActual" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#82ca9d" stopOpacity={0.7}/><stop offset="95%" stopColor="#82ca9d" stopOpacity={0.1}/></linearGradient>
+        </defs>
+        <XAxis dataKey="date" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
+        <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
+        <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+        <RechartsTooltip contentStyle={{ backgroundColor: "hsl(var(--background))", borderColor: "hsl(var(--border))" }} />
+        <Area type="monotone" dataKey="actual" stroke="#82ca9d" fillOpacity={1} fill="url(#colorActual)" name="Actual Price" />
+        <Area type="monotone" dataKey="predicted" stroke="hsl(var(--primary))" fillOpacity={1} fill="url(#colorPredicted)" name="Predicted Price" />
+        <Area type="monotone" dataKey="confidence_high" stroke="hsl(var(--primary))" fillOpacity={0.2} fill="hsl(var(--primary-foreground))" name="Confidence Band" strokeDasharray="3 3" connectNulls />
+        <Area type="monotone" dataKey="confidence_low" stroke="hsl(var(--primary))" fillOpacity={0.2} fill="hsl(var(--primary-foreground))" name="Confidence Band" strokeDasharray="3 3" connectNulls />
+      </AreaChart>
+    </ResponsiveContainer>
+  );
+}
+// --- Performance Metrics Component ---
+interface PerformanceMetrics { '7_day': { R2: number, MAE: number, RMSE: number }; '14_day': { R2: number, MAE: number, RMSE: number }; '30_day': { R2: number, MAE: number, RMSE: number }; }
+function PerformanceVisuals() {
+  const [metrics, setMetrics] = useState<PerformanceMetrics | null>(null);
+  useEffect(() => { fetch('/atlas_v2_results_20250923_001400.json').then(res => res.json()).then(data => { setMetrics(data.performance_metrics.CatBoost); }); }, []);
+  const chartData = metrics ? [{ name: '7-Day', R2: metrics['7_day'].R2 }, { name: '14-Day', R2: metrics['14_day'].R2 }, { name: '30-Day', R2: metrics['30_day'].R2 }] : [];
+  
+  if (!metrics) return <p>Loading metrics...</p>;
+  
+  const metricCards = [
+      { horizon: '7-Day', r2: metrics['7_day'].R2, mae: metrics['7_day'].MAE, rmse: metrics['7_day'].RMSE },
+      { horizon: '14-Day', r2: metrics['14_day'].R2, mae: metrics['14_day'].MAE, rmse: metrics['14_day'].RMSE },
+      { horizon: '30-Day', r2: metrics['30_day'].R2, mae: metrics['30_day'].MAE, rmse: metrics['30_day'].RMSE },
+  ];
+
+  return (
+    <div className="space-y-4">
+        <Card>
+          <CardHeader><CardTitle>Performance Metrics (CatBoost Model)</CardTitle><CardDescription>Key performance indicators showing the model's accuracy.</CardDescription></CardHeader>
+          <CardContent className="grid gap-4 md:grid-cols-3">
+              {metricCards.map(m => (
+                  <Card key={m.horizon}>
+                      <CardHeader><CardTitle>{m.horizon} Forecast</CardTitle></CardHeader>
+                      <CardContent className="space-y-2 text-sm">
+                          <div className="flex justify-between"><span>R-squared (R²)</span><span className="font-bold">{(m.r2 * 100).toFixed(1)}%</span></div>
+                          <div className="flex justify-between"><span>Mean Absolute Error (MAE)</span><span className="font-bold">${m.mae.toFixed(2)}</span></div>
+                          <div className="flex justify-between"><span>Root Mean Square Error (RMSE)</span><span className="font-bold">${m.rmse.toFixed(2)}</span></div>
+                      </CardContent>
+                  </Card>
+              ))}
+          </CardContent>
+        </Card>
+    </div>
+  );
+}
+
+
+// --- Main Page Component ---
+export default function FreightPage() {
+    const [showResults, setShowResults] = useState(false);
+
+    return (
+        <div className="space-y-4 p-8 pt-6">
+            <div className="space-y-2">
+                <h2 className="text-3xl font-bold tracking-tight">Hyperion: Freight Rate Forecasting</h2>
+                <p className="text-muted-foreground max-w-2xl">
+                    **The Investor Pitch:** In the volatile $200B+ trans-pacific shipping market, a 1-week forecasting edge is worth millions in operational efficiency and risk mitigation. We provide that edge. This demo proves our ability to find true, defensible alpha in chaotic, real-world financial data where others fail.
+                </p>
+            </div>
+
+            <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1">
+                    <AccordionTrigger>The "Rosetta Stone" Journey: Our Methodology</AccordionTrigger>
+                    <AccordionContent>
+                       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 p-4">
+                            <Card><CardHeader><Database className="h-6 w-6 mb-2" /><CardTitle>Datasets</CardTitle></CardHeader><CardContent><p className="text-sm text-muted-foreground">Utilized real-world daily price data for FEUW and UWFE freight lanes.</p></CardContent></Card>
+                            <Card><CardHeader><FileText className="h-6 w-6 mb-2" /><CardTitle>Feature Engineering</CardTitle></CardHeader><CardContent><p className="text-sm text-muted-foreground">Developed standard time-series features (lags, rolling means) and discovered the proprietary "Trade Imbalance Ratio" as a key leading indicator.</p></CardContent></Card>
+                            <Card><CardHeader><Sliders className="h-6 w-6 mb-2" /><CardTitle>Ensemble Modeling</CardTitle></CardHeader><CardContent><p className="text-sm text-muted-foreground">Deployed an ensemble of XGBoost, LightGBM, and CatBoost models to ensure robustness, with CatBoost emerging as the champion model.</p></CardContent></Card>
+                            <Card><CardHeader><BrainCircuit className="h-6 w-6 mb-2" /><CardTitle>ATLAS v2.0 Engine</CardTitle></CardHeader><CardContent><p className="text-sm text-muted-foreground">The final model is powered by our ATLAS v2.0 engine, providing not just predictions, but also confidence intervals and SHAP explainability for true decision intelligence.</p></CardContent></Card>
+                        </div>
+                    </AccordionContent>
+                </AccordionItem>
+            </Accordion>
+            
+            <div className="flex items-center space-x-2">
+                <Button onClick={() => setShowResults(true)} disabled={showResults}>
+                    <ChartIcon className="mr-2 h-4 w-4" /> Run The Demo
+                </Button>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                           <Info className="h-4 w-4 text-muted-foreground cursor-pointer" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                           <p>Click to generate the model's forecast charts and performance metrics.</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+            </div>
+            
+            <AnimatePresence>
+                {showResults && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        className="space-y-4"
+                    >
+                        <div className="pt-4">
+                           <PerformanceVisuals />
+                        </div>
+
+                        <Card>
+                            <CardHeader><CardTitle>Forecast Suite: ATLAS V2.0</CardTitle><CardDescription>Interactive charts showing actuals, predictions, and model confidence across different time horizons.</CardDescription></CardHeader>
+                            <CardContent>
+                                <ParameterizedFreightChart dataUrl="/atlas_7day_predictions_with_confidence.csv" />
+                            </CardContent>
+                        </Card>
+
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+}
+
+```
+
+-----
+
+*This completes the setup and the first, most detailed demo page. I will await your confirmation before providing the code for the four HawkEYE pages, as they will follow a similar, extensive structure.*
