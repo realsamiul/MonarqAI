@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M0NARQ - The Decision Intelligence Operating System</title>
+    <title>Kalopathor - AI Intelligence Portfolio</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -29,6 +29,11 @@
             --success: #00ff88;
             --card-bg: rgba(255, 255, 255, 0.02);
             --border: rgba(255, 255, 255, 0.1);
+        }
+
+        @font-face {
+            font-family: 'Inter';
+            src: url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
         }
 
         html { 
@@ -93,14 +98,13 @@
 
         /* Hero Section Enhanced */
         .hero {
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
             z-index: 2;
-            padding: 5vh 5vw;
         }
 
         .hero-particles {
@@ -153,12 +157,10 @@
             text-align: center;
             z-index: 2;
             position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
         }
 
         .hero-label {
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             letter-spacing: 0.3em;
             color: var(--accent);
             margin-bottom: 2rem;
@@ -175,11 +177,11 @@
         }
 
         .hero-title {
-            font-size: clamp(2.5rem, 8vw, 7rem);
+            font-size: clamp(3rem, 12vw, 9rem);
             font-weight: 100;
             letter-spacing: -0.05em;
             line-height: 0.9;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             background: linear-gradient(135deg, var(--text) 0%, var(--accent) 50%, var(--accent-blue) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -193,19 +195,9 @@
             50% { background-position: 100% 50%; }
         }
 
-        .hero-description {
-            font-size: 1.5rem;
-            line-height: 1.6;
-            color: var(--text-dim);
-            margin-bottom: 4rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
         .hero-stats {
             display: flex;
-            gap: 3rem;
+            gap: 4rem;
             justify-content: center;
             margin-top: 4rem;
             flex-wrap: wrap;
@@ -217,11 +209,23 @@
             transform: translateY(30px);
             cursor: none;
             position: relative;
-            min-width: 150px;
+        }
+
+        .hero-stat::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 15px;
+            background: linear-gradient(to bottom, transparent, var(--accent));
+            opacity: 0;
+            animation: pulse-line 2s infinite;
         }
 
         .hero-stat-value {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 600;
             background: linear-gradient(135deg, var(--accent), var(--accent-blue));
             -webkit-background-clip: text;
@@ -239,8 +243,8 @@
             letter-spacing: 0.1em;
         }
 
-        /* Section Styles */
-        .section {
+        /* Portfolio Section Enhanced */
+        .portfolio {
             padding: 15vh 5vw;
             position: relative;
             z-index: 2;
@@ -250,15 +254,12 @@
             text-align: center;
             margin-bottom: 10vh;
             opacity: 0;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .section-title {
-            font-size: clamp(2rem, 5vw, 4rem);
+            font-size: clamp(2.5rem, 6vw, 5rem);
             font-weight: 200;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             position: relative;
             display: inline-block;
         }
@@ -272,115 +273,45 @@
 
         .section-subtitle {
             font-size: 1.25rem;
-            line-height: 1.8;
             color: var(--text-dim);
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
+            opacity: 0.8;
         }
 
-        /* Engine Cards - Single Column */
-        .engine-showcase {
-            max-width: 1200px;
-            margin: 0 auto;
+        .engine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 3rem;
+            margin-top: 5vh;
         }
 
-        .engine-section {
-            margin-bottom: 12vh;
-            opacity: 0;
-            transform: translateY(50px);
-        }
-
-        .engine-header {
+        .engine-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 24px;
-            padding: 4rem;
-            margin-bottom: 4rem;
+            padding: 3rem;
             position: relative;
             overflow: hidden;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: none;
             backdrop-filter: blur(10px);
         }
 
-        .engine-header::before {
+        .engine-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
+            height: 2px;
             background: linear-gradient(90deg, var(--accent), var(--accent-blue), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .engine-icon {
-            font-size: 4rem;
-            margin-bottom: 2rem;
-            display: inline-block;
-            filter: drop-shadow(0 0 30px rgba(0, 255, 170, 0.5));
-            animation: icon-pulse 3s ease-in-out infinite;
-        }
-
-        @keyframes icon-pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .engine-name {
-            font-size: 3rem;
-            font-weight: 300;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--text), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .engine-tagline {
-            color: var(--accent);
-            font-size: 1.125rem;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 2rem;
-        }
-
-        .engine-description {
-            font-size: 1.25rem;
-            line-height: 1.8;
-            color: var(--text);
-            margin-bottom: 3rem;
-        }
-
-        .engine-highlight {
-            background: rgba(0, 255, 170, 0.1);
-            border-left: 3px solid var(--accent);
-            padding: 1.5rem 2rem;
-            margin: 2rem 0;
-            border-radius: 8px;
-        }
-
-        .engine-highlight strong {
-            color: var(--accent);
-        }
-
-        /* Capabilities Grid */
-        .capabilities-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-            margin-bottom: 4rem;
-        }
-
-        .capability-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 3rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .capability-card::after {
+        .engine-card::after {
             content: '';
             position: absolute;
             inset: 0;
@@ -392,7 +323,7 @@
             pointer-events: none;
         }
 
-        .capability-card:hover {
+        .engine-card:hover {
             transform: translateY(-8px);
             border-color: rgba(0, 255, 170, 0.3);
             background: rgba(0, 255, 170, 0.03);
@@ -401,44 +332,62 @@
                 0 0 0 1px rgba(0, 255, 170, 0.2);
         }
 
-        .capability-card:hover::after {
+        .engine-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .engine-card:hover::after {
             opacity: 1;
         }
 
-        .capability-number {
-            font-size: 1rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
+        .engine-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            filter: drop-shadow(0 0 20px rgba(0, 255, 170, 0.5));
+            animation: icon-pulse 3s ease-in-out infinite;
         }
 
-        .capability-title {
+        @keyframes icon-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .engine-name {
             font-size: 2rem;
             font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .engine-type {
+            color: var(--accent);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             margin-bottom: 1.5rem;
         }
 
-        .capability-description {
+        .engine-description {
             color: var(--text-dim);
-            line-height: 1.7;
             margin-bottom: 2rem;
+            line-height: 1.7;
         }
 
-        .capability-metrics {
+        .engine-metrics {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
+            gap: 1.5rem;
             padding-top: 2rem;
             border-top: 1px solid var(--border);
         }
 
         .metric {
-            text-align: left;
+            text-align: center;
+            position: relative;
         }
 
         .metric-value {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 600;
             background: linear-gradient(135deg, var(--accent), var(--accent-blue));
             -webkit-background-clip: text;
@@ -448,106 +397,18 @@
         }
 
         .metric-label {
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             color: var(--text-dim);
             margin-top: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
-        /* Journey Section */
-        .journey-section {
-            background: linear-gradient(180deg, 
-                transparent, 
-                rgba(0, 255, 170, 0.02), 
-                transparent);
-            padding: 15vh 5vw;
-        }
-
-        .journey-stage {
-            max-width: 1000px;
-            margin: 0 auto 10vh;
-            opacity: 0;
-        }
-
-        .stage-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 4rem;
-            position: relative;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .stage-card::before {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-blue));
-            border-radius: 24px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: -1;
-            filter: blur(10px);
-        }
-
-        .stage-card:hover::before {
-            opacity: 0.3;
-        }
-
-        .stage-label {
-            font-size: 0.875rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 1rem;
-        }
-
-        .stage-title {
-            font-size: 2.5rem;
-            font-weight: 300;
-            margin-bottom: 1.5rem;
-        }
-
-        .stage-description {
-            font-size: 1.125rem;
-            color: var(--text);
-            line-height: 1.8;
-            margin-bottom: 2rem;
-        }
-
-        .stage-insight {
-            background: rgba(0, 255, 170, 0.05);
-            border-left: 3px solid var(--accent);
-            padding: 1.5rem 2rem;
-            margin-top: 2rem;
-            border-radius: 8px;
-        }
-
-        .stage-stats {
-            display: flex;
-            gap: 3rem;
-            margin-top: 2rem;
-        }
-
-        .stage-stat-value {
-            font-size: 2.5rem;
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        .stage-stat-label {
-            font-size: 0.875rem;
-            color: var(--text-dim);
-            margin-top: 0.5rem;
-        }
-
-        /* Data Visualization */
+        /* Interactive Data Visualizations */
         .data-viz-container {
             position: relative;
             width: 100%;
-            height: 500px;
+            height: 400px;
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 16px;
@@ -561,47 +422,255 @@
             height: 100%;
         }
 
-        /* Results Dashboard */
-        .results-grid {
+        /* Network Visualization */
+        .network-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .network-node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 255, 170, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .network-node:hover {
+            transform: scale(2);
+            box-shadow: 0 0 40px rgba(0, 255, 170, 1);
+        }
+
+        .network-edge {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(0, 255, 170, 0.3), 
+                transparent);
+            transform-origin: left center;
+            pointer-events: none;
+            animation: data-flow 3s linear infinite;
+        }
+
+        @keyframes data-flow {
+            0% { opacity: 0.1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 0.1; }
+        }
+
+        /* Real-time Data Stream */
+        .data-stream {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            overflow: hidden;
+            padding: 1rem;
+        }
+
+        .stream-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: rgba(0, 255, 170, 0.05);
+            border-left: 2px solid var(--accent);
+            border-radius: 4px;
+            animation: slideIn 0.5s ease;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.875rem;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .stream-timestamp {
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .stream-value {
+            color: var(--text);
+            flex: 1;
+        }
+
+        .stream-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Odyssey Timeline Enhanced */
+        .odyssey {
+            padding: 15vh 5vw;
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(180deg, 
+                transparent, 
+                rgba(0, 255, 170, 0.02), 
+                transparent);
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, 
+                transparent, 
+                var(--accent), 
+                var(--accent-blue), 
+                transparent);
+            opacity: 0.3;
+        }
+
+        .odyssey-stage {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            margin-bottom: 12vh;
+            align-items: center;
+            opacity: 0;
+        }
+
+        .stage-content {
+            padding: 4rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            position: relative;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .stage-label {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        .stage-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+        }
+
+        .stage-description {
+            color: var(--text-dim);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .stage-stats {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .stage-stat-value {
+            font-size: 2.5rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .stage-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 0.5rem;
+        }
+
+        /* Impact Section Enhanced */
+        .impact {
+            padding: 15vh 5vw;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .impact-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
-            margin-top: 4rem;
+            margin-top: 8vh;
         }
 
-        .result-card {
+        .impact-card {
+            padding: 3rem 2rem;
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2rem;
-            text-align: center;
+            border-radius: 20px;
+            opacity: 0;
+            transform: scale(0.9);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
         }
 
-        .result-card:hover {
-            transform: translateY(-4px);
-            background: rgba(0, 255, 170, 0.03);
-            border-color: rgba(0, 255, 170, 0.3);
+        .impact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-blue));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
-        .result-number {
-            font-size: 3rem;
+        .impact-card:hover {
+            transform: scale(1.05);
+            background: rgba(0, 255, 170, 0.05);
+            box-shadow: 0 20px 40px rgba(0, 255, 170, 0.1);
+        }
+
+        .impact-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .impact-number {
+            font-size: 3.5rem;
             font-weight: 700;
             background: linear-gradient(135deg, var(--accent), var(--accent-blue));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 0.5rem;
+            font-variant-numeric: tabular-nums;
         }
 
-        .result-label {
+        .impact-label {
             color: var(--text-dim);
             font-size: 0.875rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
-        /* CTA Section */
+        /* CTA Enhanced */
         .cta {
             padding: 20vh 5vw;
             text-align: center;
@@ -612,13 +681,8 @@
             z-index: 2;
         }
 
-        .cta-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
         .cta-title {
-            font-size: clamp(2rem, 5vw, 4rem);
+            font-size: clamp(2.5rem, 6vw, 5rem);
             font-weight: 200;
             margin-bottom: 2rem;
         }
@@ -627,7 +691,6 @@
             font-size: 1.5rem;
             color: var(--text-dim);
             margin-bottom: 4rem;
-            line-height: 1.6;
         }
 
         .cta-button {
@@ -651,7 +714,7 @@
             box-shadow: 0 20px 60px rgba(0, 255, 170, 0.4);
         }
 
-        /* Loader */
+        /* Enhanced Loader */
         .loader {
             position: fixed;
             inset: 0;
@@ -713,18 +776,17 @@
         }
 
         @media (max-width: 768px) {
-            .hero-stats { 
-                gap: 2rem; 
-                flex-direction: column;
-            }
-            .capability-metrics {
+            .engine-grid { 
                 grid-template-columns: 1fr;
+                gap: 2rem;
             }
-            .stage-stats {
-                flex-direction: column;
-                gap: 1.5rem;
+            .odyssey-stage { 
+                grid-template-columns: 1fr;
+                gap: 2rem;
             }
-            .results-grid {
+            .timeline-line { display: none; }
+            .hero-stats { gap: 2rem; }
+            .impact-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -736,7 +798,7 @@
     
     <div class="loader">
         <div class="loader-content">
-            <div class="loader-text">Initializing Decision OS</div>
+            <div class="loader-text">Initializing Systems</div>
             <div class="loader-bar">
                 <div class="loader-progress"></div>
             </div>
@@ -749,384 +811,305 @@
         <div class="hero-particles" id="particles"></div>
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <div class="hero-label">The Operating System for Decision Intelligence</div>
+            <div class="hero-label">AI Intelligence Platform</div>
             <h1 class="hero-title">
-                M0NARQ<br><span class="accent">Decision OS</span>
+                Beyond<br><span class="accent">Prediction</span>
             </h1>
-            <p class="hero-description">
-                Traditional analytics builds narrow telescopes. We've built an Operating System for Decision-Making. 
-                Our twin engines—HYPERION for predictive analytics and HAWKEYE for physical intelligence—transform 
-                disconnected data into defensible strategic advantage.
-            </p>
             <div class="hero-stats">
                 <div class="hero-stat">
-                    <div class="hero-stat-value">2</div>
-                    <div class="hero-stat-label">Flagship Engines</div>
+                    <div class="hero-stat-value">5</div>
+                    <div class="hero-stat-label">AI Systems</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-value">30+</div>
-                    <div class="hero-stat-label">Data Sources Fused</div>
+                    <div class="hero-stat-value">95%+</div>
+                    <div class="hero-stat-label">Accuracy</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-value">70%</div>
-                    <div class="hero-stat-label">Forecast Accuracy</div>
+                    <div class="hero-stat-value">800K</div>
+                    <div class="hero-stat-label">Lives Impacted</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-value">99.7%</div>
-                    <div class="hero-stat-label">Faster Analysis</div>
+                    <div class="hero-stat-value">3</div>
+                    <div class="hero-stat-label">Countries</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Engine 1: HYPERION -->
-    <section class="section">
+    <!-- Portfolio -->
+    <section class="portfolio">
         <div class="section-header">
-            <h2 class="section-title">Twin <span class="accent">Engines</span></h2>
-            <p class="section-subtitle">
-                Two complementary systems that tackle the full spectrum of decision intelligence: 
-                HYPERION masters the structured world of commerce and markets, while HAWKEYE 
-                decodes the unstructured physical world from space.
-            </p>
+            <h2 class="section-title">The <span class="accent">Arsenal</span></h2>
+            <p class="section-subtitle">Five integrated AI systems for global risk intelligence</p>
         </div>
 
-        <div class="engine-showcase">
-            <!-- HYPERION Engine -->
-            <div class="engine-section">
-                <div class="engine-header">
-                    <div class="engine-icon">📊</div>
-                    <h3 class="engine-name">HYPERION</h3>
-                    <div class="engine-tagline">Mastering the Structured World</div>
-                    <p class="engine-description">
-                        HYPERION is our engine for navigating the complex, chaotic world of commerce, finance, and logistics. 
-                        It doesn't promise impossible accuracy—it delivers honest, defensible intelligence by discovering 
-                        proprietary signals hidden in market noise.
-                    </p>
-                    <div class="engine-highlight">
-                        <strong>The Breakthrough:</strong> After deliberately failing with 98% accurate but useless models, 
-                        we discovered the "Trade Imbalance Ratio"—a proprietary feature that unlocked genuine predictive power. 
-                        This journey from illusion to insight defines our methodology.
-                    </div>
-                </div>
-
-                <div class="capabilities-grid">
-                    <div class="capability-card">
-                        <div class="capability-number">CAPABILITY 01</div>
-                        <h4 class="capability-title">Freight Intelligence</h4>
-                        <p class="capability-description">
-                            Transform from reactive price-taker to proactive strategist. Our engine analyzes the Far East to US West Coast 
-                            shipping lane, discovering hidden patterns in trade imbalances that predict rate volatility before it happens. 
-                            While competitors chase vanity metrics, we deliver actionable forecasts grounded in market physics.
-                        </p>
-                        <div class="capability-metrics">
-                            <div class="metric">
-                                <div class="metric-value">70%</div>
-                                <div class="metric-label">7-Day R² Score</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">$611</div>
-                                <div class="metric-label">MAE (USD/TEU)</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">2,698</div>
-                                <div class="metric-label">Trade Records</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">6</div>
-                                <div class="metric-label">Model Ensemble</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="capability-card">
-                        <div class="capability-number">CAPABILITY 02</div>
-                        <h4 class="capability-title">Model Foundry Approach</h4>
-                        <p class="capability-description">
-                            We don't rely on a single algorithm. HYPERION implements a "foundry" that benchmarks world-class models—from 
-                            Ridge Regression to LightGBM and XGBoost—ensuring robustness and avoiding the fragility of single-model dependence. 
-                            Each forecast horizon gets the optimal algorithm, validated through rigorous backtesting.
-                        </p>
-                        <div class="capability-metrics">
-                            <div class="metric">
-                                <div class="metric-value">3</div>
-                                <div class="metric-label">Forecast Horizons</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">Real-time</div>
-                                <div class="metric-label">Data Pipeline</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="data-viz-container">
-                    <canvas id="hyperionChart" class="live-chart"></canvas>
-                </div>
-            </div>
-
-            <!-- HAWKEYE Engine -->
-            <div class="engine-section">
-                <div class="engine-header">
-                    <div class="engine-icon">🛰️</div>
-                    <h3 class="engine-name">HAWKEYE</h3>
-                    <div class="engine-tagline">Decoding the Physical World</div>
-                    <p class="engine-description">
-                        HAWKEYE is our engine for physical intelligence. It ingests vast, unstructured geospatial data to answer 
-                        complex questions about the world. From detecting floods in minutes instead of days, to discovering crop 
-                        stress without human labels, to predicting disease outbreaks—HAWKEYE sees what others cannot.
-                    </p>
-                    <div class="engine-highlight">
-                        <strong>The Innovation:</strong> While others need labeled training data, HAWKEYE uses self-supervised learning 
-                        and physics-informed pseudo-labels to discover insights in raw satellite imagery. It finds the "unknown unknowns"—
-                        the patterns no one knew to look for.
-                    </div>
-                </div>
-
-                <div class="capabilities-grid">
-                    <div class="capability-card">
-                        <div class="capability-number">CAPABILITY 01</div>
-                        <h4 class="capability-title">Flood Intelligence</h4>
-                        <p class="capability-description">
-                            Traditional flood mapping takes 7 days of manual analysis. HAWKEYE does it in 30 minutes. By fusing 
-                            cloud-penetrating SAR radar, multispectral optical imagery, and elevation data through a Vision Transformer, 
-                            we provide near real-time situational awareness that saves lives and billions in damages.
-                        </p>
-                        <div class="capability-metrics">
-                            <div class="metric">
-                                <div class="metric-value">99.7%</div>
-                                <div class="metric-label">Faster Analysis</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">0.91</div>
-                                <div class="metric-label">mIoU Score</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">15,000</div>
-                                <div class="metric-label">km² Processed</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">3</div>
-                                <div class="metric-label">Data Modalities</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="capability-card">
-                        <div class="capability-number">CAPABILITY 02</div>
-                        <h4 class="capability-title">Crop Intelligence</h4>
-                        <p class="capability-description">
-                            Without a single human label, HAWKEYE discovered that 8.27% of Jessore's agricultural area showed signs 
-                            of stress. Using self-supervised learning (SimSiam) and unsupervised clustering, it teaches itself what 
-                            healthy vegetation looks like, then automatically identifies anomalies—creating value from vast archives 
-                            of unlabeled satellite data.
-                        </p>
-                        <div class="capability-metrics">
-                            <div class="metric">
-                                <div class="metric-value">8.27%</div>
-                                <div class="metric-label">Stress Detected</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">Zero</div>
-                                <div class="metric-label">Labels Required</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">9</div>
-                                <div class="metric-label">Spectral Bands</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">10m</div>
-                                <div class="metric-label">Resolution</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="capability-card">
-                        <div class="capability-number">CAPABILITY 03</div>
-                        <h4 class="capability-title">Urban Intelligence</h4>
-                        <p class="capability-description">
-                            The pinnacle of HAWKEYE: fusing 30+ datasets to forecast disease outbreaks and economic activity. 
-                            We discovered that maximum temperature predicts Dengue cases with a 2-week lag—enabling proactive 
-                            intervention. Nighttime lights correlate 0.88 with GDP, creating real-time economic indicators that 
-                            don't wait for quarterly reports.
-                        </p>
-                        <div class="capability-metrics">
-                            <div class="metric">
-                                <div class="metric-value">9.8%</div>
-                                <div class="metric-label">Forecast MAPE</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">2-week</div>
-                                <div class="metric-label">Causal Lag</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">0.88</div>
-                                <div class="metric-label">GDP Correlation</div>
-                            </div>
-                            <div class="metric">
-                                <div class="metric-value">30+</div>
-                                <div class="metric-label">Data Sources</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="data-viz-container">
-                    <canvas id="hawkeyeChart" class="live-chart"></canvas>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Journey Section -->
-    <section class="journey-section">
-        <div class="section-header">
-            <h2 class="section-title">The <span class="accent">Crucible</span></h2>
-            <p class="section-subtitle">
-                Our methodology was forged through deliberate failure. This three-stage validation process, 
-                which we call "The Crucible," is what separates genuine intelligence from dangerous illusion. 
-                It's not just how we build—it's why our solutions work when others fail.
-            </p>
+        <!-- Live Data Visualization -->
+        <div class="data-viz-container">
+            <canvas id="portfolioChart" class="live-chart"></canvas>
         </div>
 
-        <div class="journey-stage">
-            <div class="stage-card">
-                <div class="stage-label">Stage 1</div>
-                <h3 class="stage-title">The Chimera: Slaying Vanity Metrics</h3>
-                <p class="stage-description">
-                    We began by deliberately creating a "perfect" model with 98% R² accuracy on simulated data. 
-                    This wasn't naivety—it was strategy. We call this the Chimera: a beautiful illusion that would 
-                    fool investors but fail in reality. By building and then destroying this mirage, we inoculated 
-                    ourselves against the seductive trap of vanity metrics.
+        <div class="engine-grid">
+            <!-- HawkEYE Flood -->
+            <div class="engine-card">
+                <div class="engine-icon">🌊</div>
+                <h3 class="engine-name">HawkEYE Flood</h3>
+                <div class="engine-type">Disaster Intelligence</div>
+                <p class="engine-description">
+                    Multi-modal flood detection using Sentinel-1 SAR, Vision Transformers, and physics-informed neural networks. Processes 15,000 km² in 30 minutes vs 7 days traditional methods.
                 </p>
-                <div class="stage-insight">
-                    <strong>The Lesson:</strong> Any claim of near-perfect prediction in chaotic markets is built on 
-                    flawed assumptions. A model that's 98% accurate on the wrong problem is 100% useless. This 
-                    deliberate exercise saved us from deploying sophisticated nonsense.
+                <div class="engine-metrics">
+                    <div class="metric">
+                        <div class="metric-value">95%+</div>
+                        <div class="metric-label">Accuracy</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">99.7%</div>
+                        <div class="metric-label">Faster</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">0.91</div>
+                        <div class="metric-label">mIoU Score</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">3</div>
+                        <div class="metric-label">Countries</div>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Other engine cards remain the same... -->
+            <div class="engine-card">
+                <div class="engine-icon">🦟</div>
+                <h3 class="engine-name">HawkEYE Omega</h3>
+                <div class="engine-type">Disease Intelligence</div>
+                <p class="engine-description">
+                    Dengue prediction with causal discovery, integrating 1,084 health reports, satellite imagery (NDWI, NDVI), live weather APIs, and economic indicators for 14-day forecasting.
+                </p>
+                <div class="engine-metrics">
+                    <div class="metric">
+                        <div class="metric-value">9.8%</div>
+                        <div class="metric-label">MAPE</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">$15.2M</div>
+                        <div class="metric-label">Impact</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">1,084</div>
+                        <div class="metric-label">PDF Reports</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">14-day</div>
+                        <div class="metric-label">Forecast</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="engine-card">
+                <div class="engine-icon">🌾</div>
+                <h3 class="engine-name">HawkEYE Crop</h3>
+                <div class="engine-type">Agricultural Intelligence</div>
+                <p class="engine-description">
+                    Self-supervised learning discovers crop stress patterns from unlabeled Sentinel-2 imagery. SimSiam feature learning with K-means clustering for unsupervised pattern detection.
+                </p>
+                <div class="engine-metrics">
+                    <div class="metric">
+                        <div class="metric-value">8.27%</div>
+                        <div class="metric-label">Stress Area</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">4</div>
+                        <div class="metric-label">Clusters</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">High</div>
+                        <div class="metric-label">Confidence</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">10m</div>
+                        <div class="metric-label">Resolution</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="engine-card">
+                <div class="engine-icon">📊</div>
+                <h3 class="engine-name">ATLAS V2.0</h3>
+                <div class="engine-type">Trade Intelligence</div>
+                <p class="engine-description">
+                    Advanced freight forecasting with the Trade Imbalance Ratio discovery. Ensemble methods, quantile regression confidence intervals, and SHAP explainability for actionable insights.
+                </p>
+                <div class="engine-metrics">
+                    <div class="metric">
+                        <div class="metric-value">0.807</div>
+                        <div class="metric-label">7-day R²</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">$611</div>
+                        <div class="metric-label">MAE USD/TEU</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">2,698</div>
+                        <div class="metric-label">Data Points</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">±$1,500</div>
+                        <div class="metric-label">Confidence</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="engine-card">
+                <div class="engine-icon">🎯</div>
+                <h3 class="engine-name">Unified Platform</h3>
+                <div class="engine-type">Integration Layer</div>
+                <p class="engine-description">
+                    Real-time risk assessment combining satellite flood data with freight forecasting. Generates port-specific recommendations with disruption premium calculations.
+                </p>
+                <div class="engine-metrics">
+                    <div class="metric">
+                        <div class="metric-value">4</div>
+                        <div class="metric-label">Ports Analyzed</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">Real-time</div>
+                        <div class="metric-label">Updates</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">$800</div>
+                        <div class="metric-label">Max Premium</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">Multi-modal</div>
+                        <div class="metric-label">Analysis</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Odyssey -->
+    <section class="odyssey">
+        <div class="timeline-line"></div>
+        <div class="section-header">
+            <h2 class="section-title">The <span class="accent">Odyssey</span></h2>
+            <p class="section-subtitle">From illusion to breakthrough</p>
+        </div>
+
+        <div class="odyssey-stage">
+            <div class="stage-content">
+                <div class="stage-label">Stage 1</div>
+                <h3 class="stage-title">The Chimera</h3>
+                <p class="stage-description">
+                    We began with a seductive illusion—98% accuracy on simulated data. Beautiful metrics that would have fooled investors, but not the real world. The model's collapse was not a failure, but the first lesson.
+                </p>
                 <div class="stage-stats">
                     <div>
                         <div class="stage-stat-value">98%</div>
-                        <div class="stage-stat-label">Simulated Accuracy</div>
+                        <div class="stage-stat-label">Simulated R²</div>
                     </div>
                     <div>
                         <div class="stage-stat-value">100%</div>
-                        <div class="stage-stat-label">Real-World Failure</div>
+                        <div class="stage-stat-label">Useless</div>
                     </div>
                 </div>
             </div>
+            <div class="data-viz-container">
+                <div class="network-container" id="network1"></div>
+            </div>
         </div>
 
-        <div class="journey-stage">
-            <div class="stage-card">
+        <div class="odyssey-stage">
+            <div class="stage-content">
                 <div class="stage-label">Stage 2</div>
-                <h3 class="stage-title">The Abyss: Embracing Necessary Failure</h3>
+                <h3 class="stage-title">The Abyss</h3>
                 <p class="stage-description">
-                    When we unleashed our models on real-world freight data, they didn't just fail—they produced 
-                    negative R² scores, meaning they were worse than random guessing. This wasn't a setback; it was 
-                    the scientific method in action. The models were correctly telling us that our hypothesis was wrong, 
-                    saving us from costly deployment of useless technology.
+                    Real data destroyed everything. Negative R² scores. Complete failure. But this wasn't a bug—it was scientific falsification saving us from deploying useless technology. Honesty over metrics.
                 </p>
-                <div class="stage-insight">
-                    <strong>The Insight:</strong> Honest failure is more valuable than misleading success. By failing 
-                    fast and failing honestly, we eliminated false paths in weeks instead of wasting years. This is 
-                    how we maintain intellectual integrity while others chase metrics.
-                </div>
                 <div class="stage-stats">
                     <div>
                         <div class="stage-stat-value">-0.23</div>
-                        <div class="stage-stat-label">Real R² Score</div>
+                        <div class="stage-stat-label">Real R²</div>
                     </div>
                     <div>
                         <div class="stage-stat-value">100%</div>
-                        <div class="stage-stat-label">Honest Assessment</div>
+                        <div class="stage-stat-label">Honest</div>
                     </div>
                 </div>
             </div>
+            <div class="data-viz-container">
+                <div class="data-stream" id="dataStream"></div>
+            </div>
         </div>
 
-        <div class="journey-stage">
-            <div class="stage-card">
+        <div class="odyssey-stage">
+            <div class="stage-content">
                 <div class="stage-label">Stage 3</div>
-                <h3 class="stage-title">The Rosetta Stone: Discovering Alpha</h3>
+                <h3 class="stage-title">The Rosetta Stone</h3>
                 <p class="stage-description">
-                    True advantage isn't found in better algorithms—it's found in better features. Through deep 
-                    domain expertise and relentless experimentation, we discovered the "Trade Imbalance Ratio": 
-                    the relationship between eastbound and westbound shipping rates that captures market tension. 
-                    This proprietary insight transformed our failed models into powerful forecasting engines.
+                    Through relentless feature engineering, we discovered it: the Trade Imbalance Ratio. Not complex algorithms, but the right insight that decoded freight behavior and created a defensible edge.
                 </p>
-                <div class="stage-insight">
-                    <strong>The Breakthrough:</strong> A high ratio indicates strong demand to ship goods to the US 
-                    and weak return demand—a precursor to capacity shortages and rate spikes. This single feature, 
-                    born from our failures, gave our models a defensible edge that pure machine learning could never achieve.
-                </div>
                 <div class="stage-stats">
                     <div>
-                        <div class="stage-stat-value">0.70</div>
-                        <div class="stage-stat-label">Final R² Score</div>
+                        <div class="stage-stat-value">0.807</div>
+                        <div class="stage-stat-label">Final R²</div>
                     </div>
                     <div>
                         <div class="stage-stat-value">$611</div>
-                        <div class="stage-stat-label">MAE (USD/TEU)</div>
+                        <div class="stage-stat-label">MAE USD/TEU</div>
                     </div>
                 </div>
+            </div>
+            <div class="data-viz-container">
+                <canvas id="successChart" class="live-chart"></canvas>
             </div>
         </div>
     </section>
 
-    <!-- Results Section -->
-    <section class="section">
+    <!-- Impact -->
+    <section class="impact">
         <div class="section-header">
-            <h2 class="section-title">Validated <span class="accent">Performance</span></h2>
-            <p class="section-subtitle">
-                These aren't projections or simulations. These are real results from production-ready systems, 
-                validated on out-of-sample data and tested against the chaos of real markets and the complexity 
-                of physical systems.
-            </p>
+            <h2 class="section-title">Global <span class="accent">Impact</span></h2>
+            <p class="section-subtitle">Real-world validation across multiple domains</p>
         </div>
 
-        <div class="results-grid">
-            <div class="result-card">
-                <div class="result-number">70%</div>
-                <div class="result-label">Freight Forecast R²</div>
-            </div>
-            <div class="result-card">
-                <div class="result-number">30min</div>
-                <div class="result-label">vs 7 Days Traditional</div>
-            </div>
-            <div class="result-card">
-                <div class="result-number">8.27%</div>
-                <div class="result-label">Crop Stress Found</div>
-            </div>
-            <div class="result-card">
-                <div class="result-number">Zero</div>
-                <div class="result-label">Labels Required</div>
-            </div>
-            <div class="result-card">
-                <div class="result-number">9.8%</div>
-                <div class="result-label">Disease Forecast MAPE</div>
-            </div>
-            <div class="result-card">
-                <div class="result-number">0.88</div>
-                <div class="result-label">GDP Correlation</div>
-            </div>
+        <div class="data-viz-container" style="margin-bottom: 8vh;">
+            <canvas id="impactChart" class="live-chart"></canvas>
         </div>
-
-        <div class="data-viz-container" style="margin-top: 4rem;">
-            <canvas id="performanceChart" class="live-chart"></canvas>
+        
+        <div class="impact-grid">
+            <div class="impact-card">
+                <div class="impact-number">800K</div>
+                <div class="impact-label">Lives Impacted</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-number">15,000</div>
+                <div class="impact-label">km² Analyzed</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-number">99.7%</div>
+                <div class="impact-label">Faster Processing</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-number">$15.2M</div>
+                <div class="impact-label">Economic Impact</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-number">1,084</div>
+                <div class="impact-label">Reports Analyzed</div>
+            </div>
+            <div class="impact-card">
+                <div class="impact-number">2,698</div>
+                <div class="impact-label">Trade Records</div>
+            </div>
         </div>
     </section>
 
     <!-- CTA -->
     <section class="cta">
-        <div class="cta-content">
-            <h2 class="cta-title">From Signal to Strategy</h2>
-            <p class="cta-subtitle">
-                The M0NARQ Decision OS is ready for deployment. Our twin engines have been battle-tested, 
-                our methodology proven through fire, and our results validated in the real world. 
-                The question isn't whether this technology works—it's whether you'll deploy it before your competition does.
-            </p>
-            <a href="#" class="cta-button">Schedule Deep Dive</a>
-        </div>
+        <h2 class="cta-title">Ready to Deploy</h2>
+        <p class="cta-subtitle">Production-ready AI systems for global risk intelligence</p>
+        <a href="#" class="cta-button">Explore Platform</a>
     </section>
 
     <script>
@@ -1158,7 +1141,7 @@
         animateCursor();
 
         // Hover effects
-        document.querySelectorAll('a, button, .capability-card, .result-card').forEach(el => {
+        document.querySelectorAll('a, button, .engine-card, .impact-card').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
             
@@ -1185,7 +1168,7 @@
         }
         createParticles();
 
-        // Loader
+        // Enhanced Loader with guaranteed completion
         const loader = document.querySelector('.loader');
         const loaderProgress = document.querySelector('.loader-progress');
         const loaderPercentage = document.querySelector('.loader-percentage');
@@ -1208,24 +1191,28 @@
                             loader.style.display = 'none';
                             initAnimations();
                             initCharts();
+                            initNetworkVisualization();
+                            initDataStream();
                         }
                     });
                 }, 300);
             }
         }, 50);
 
-        // Fallback
+        // Fallback to ensure loader disappears
         setTimeout(() => {
             if (loader.style.display !== 'none') {
                 loader.style.display = 'none';
                 initAnimations();
                 initCharts();
+                initNetworkVisualization();
+                initDataStream();
             }
         }, 3000);
 
         // Initialize Animations
         function initAnimations() {
-            // Hero Stats
+            // Hero Stats Animation
             gsap.to('.hero-stat', {
                 opacity: 1,
                 y: 0,
@@ -1247,22 +1234,22 @@
                 });
             });
 
-            // Engine Sections
-            gsap.utils.toArray('.engine-section').forEach((section, i) => {
-                gsap.to(section, {
+            // Engine Cards
+            gsap.utils.toArray('.engine-card').forEach((card, i) => {
+                gsap.to(card, {
                     opacity: 1,
                     y: 0,
-                    duration: 1.2,
-                    delay: i * 0.2,
+                    duration: 1,
+                    delay: i * 0.1,
                     scrollTrigger: {
-                        trigger: section,
+                        trigger: card,
                         start: 'top 85%'
                     }
                 });
             });
 
-            // Journey Stages
-            gsap.utils.toArray('.journey-stage').forEach(stage => {
+            // Odyssey Stages
+            gsap.utils.toArray('.odyssey-stage').forEach(stage => {
                 gsap.to(stage, {
                     opacity: 1,
                     y: 0,
@@ -1274,8 +1261,8 @@
                 });
             });
 
-            // Result Cards
-            gsap.utils.toArray('.result-card').forEach((card, i) => {
+            // Impact Cards
+            gsap.utils.toArray('.impact-card').forEach((card, i) => {
                 gsap.to(card, {
                     opacity: 1,
                     scale: 1,
@@ -1291,28 +1278,27 @@
 
         // Initialize Charts
         function initCharts() {
-            // HYPERION Performance Chart
-            const hyperionCtx = document.getElementById('hyperionChart');
-            if (hyperionCtx && hyperionCtx.getContext) {
-                new Chart(hyperionCtx, {
+            // Portfolio Performance Chart
+            const portfolioCtx = document.getElementById('portfolioChart');
+            if (portfolioCtx && portfolioCtx.getContext) {
+                new Chart(portfolioCtx, {
                     type: 'line',
                     data: {
-                        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                         datasets: [{
-                            label: 'Actual Rates',
-                            data: [2847, 2912, 2889, 2956, 3021, 2998],
-                            borderColor: '#8b8b8b',
-                            backgroundColor: 'transparent',
-                            tension: 0.4,
-                            borderWidth: 2
-                        }, {
-                            label: 'HYPERION Forecast',
-                            data: [2850, 2905, 2895, 2948, 3015, 3005],
+                            label: 'Accuracy',
+                            data: [88, 90, 92, 93, 94, 95],
                             borderColor: '#00ffaa',
                             backgroundColor: 'rgba(0, 255, 170, 0.1)',
                             tension: 0.4,
-                            fill: true,
-                            borderWidth: 2
+                            fill: true
+                        }, {
+                            label: 'Coverage',
+                            data: [75, 78, 82, 85, 88, 91],
+                            borderColor: '#00a6ff',
+                            backgroundColor: 'rgba(0, 166, 255, 0.1)',
+                            tension: 0.4,
+                            fill: true
                         }]
                     },
                     options: {
@@ -1323,12 +1309,6 @@
                                 display: true,
                                 position: 'top',
                                 labels: { color: '#8b8b8b' }
-                            },
-                            title: {
-                                display: true,
-                                text: 'Freight Rate Forecasting (USD/TEU)',
-                                color: '#ffffff',
-                                font: { size: 16 }
                             }
                         },
                         scales: {
@@ -1338,91 +1318,34 @@
                             },
                             y: {
                                 grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                                ticks: { 
-                                    color: '#8b8b8b',
-                                    callback: function(value) {
-                                        return '$' + value;
-                                    }
-                                }
+                                ticks: { color: '#8b8b8b' }
                             }
                         }
                     }
                 });
             }
 
-            // HAWKEYE Capabilities Chart
-            const hawkeyeCtx = document.getElementById('hawkeyeChart');
-            if (hawkeyeCtx && hawkeyeCtx.getContext) {
-                new Chart(hawkeyeCtx, {
-                    type: 'radar',
-                    data: {
-                        labels: ['Speed', 'Accuracy', 'Coverage', 'Automation', 'Multi-modal', 'Real-time'],
-                        datasets: [{
-                            label: 'Traditional Methods',
-                            data: [20, 75, 60, 10, 30, 5],
-                            borderColor: '#8b8b8b',
-                            backgroundColor: 'rgba(139, 139, 139, 0.2)',
-                            borderWidth: 2
-                        }, {
-                            label: 'HAWKEYE Engine',
-                            data: [95, 91, 95, 100, 100, 90],
-                            borderColor: '#00ffaa',
-                            backgroundColor: 'rgba(0, 255, 170, 0.2)',
-                            borderWidth: 2
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: true,
-                                position: 'top',
-                                labels: { color: '#8b8b8b' }
-                            },
-                            title: {
-                                display: true,
-                                text: 'HAWKEYE vs Traditional Analysis',
-                                color: '#ffffff',
-                                font: { size: 16 }
-                            }
-                        },
-                        scales: {
-                            r: {
-                                grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                                angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-                                pointLabels: { color: '#8b8b8b' },
-                                ticks: { 
-                                    color: '#8b8b8b',
-                                    backdropColor: 'transparent'
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-            // Performance Comparison Chart
-            const performanceCtx = document.getElementById('performanceChart');
-            if (performanceCtx && performanceCtx.getContext) {
-                new Chart(performanceCtx, {
+            // Success Metrics Chart
+            const successCtx = document.getElementById('successChart');
+            if (successCtx && successCtx.getContext) {
+                new Chart(successCtx, {
                     type: 'bar',
                     data: {
-                        labels: ['Flood Detection', 'Crop Analysis', 'Disease Forecast', 'GDP Nowcast'],
+                        labels: ['Initial', 'Refined', 'Optimized', 'Final'],
                         datasets: [{
-                            label: 'Accuracy/Correlation',
-                            data: [91, 82.7, 90.2, 88],
+                            label: 'Model R²',
+                            data: [-0.23, 0.35, 0.67, 0.807],
                             backgroundColor: [
-                                'rgba(0, 255, 170, 0.8)',
-                                'rgba(0, 166, 255, 0.8)',
-                                'rgba(139, 92, 246, 0.8)',
-                                'rgba(255, 170, 0, 0.8)'
+                                'rgba(255, 0, 85, 0.5)',
+                                'rgba(255, 170, 0, 0.5)',
+                                'rgba(0, 166, 255, 0.5)',
+                                'rgba(0, 255, 170, 0.5)'
                             ],
                             borderColor: [
-                                '#00ffaa',
+                                '#ff0055',
+                                '#ffaa00',
                                 '#00a6ff',
-                                '#8b5cf6',
-                                '#ffaa00'
+                                '#00ffaa'
                             ],
                             borderWidth: 2
                         }]
@@ -1431,13 +1354,7 @@
                         responsive: true,
                         maintainAspectRatio: false,
                         plugins: {
-                            legend: { display: false },
-                            title: {
-                                display: true,
-                                text: 'System Performance Across Domains',
-                                color: '#ffffff',
-                                font: { size: 16 }
-                            }
+                            legend: { display: false }
                         },
                         scales: {
                             x: {
@@ -1446,18 +1363,127 @@
                             },
                             y: {
                                 grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                                ticks: { 
-                                    color: '#8b8b8b',
-                                    callback: function(value) {
-                                        return value + '%';
-                                    }
-                                },
-                                max: 100
+                                ticks: { color: '#8b8b8b' }
                             }
                         }
                     }
                 });
             }
+
+            // Impact Distribution Chart
+            const impactCtx = document.getElementById('impactChart');
+            if (impactCtx && impactCtx.getContext) {
+                new Chart(impactCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Bangladesh', 'Pakistan', 'India', 'Other'],
+                        datasets: [{
+                            data: [45, 25, 20, 10],
+                            backgroundColor: [
+                                'rgba(0, 255, 170, 0.8)',
+                                'rgba(0, 166, 255, 0.8)',
+                                'rgba(139, 92, 246, 0.8)',
+                                'rgba(255, 170, 0, 0.8)'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                labels: { color: '#8b8b8b' }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Network Visualization
+        function initNetworkVisualization() {
+            const container = document.getElementById('network1');
+            if (!container) return;
+
+            const nodes = 12;
+            const centerX = container.offsetWidth / 2;
+            const centerY = container.offsetHeight / 2;
+            const radius = Math.min(centerX, centerY) * 0.7;
+
+            for (let i = 0; i < nodes; i++) {
+                const angle = (i / nodes) * 2 * Math.PI;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+
+                const node = document.createElement('div');
+                node.className = 'network-node';
+                node.style.left = x + 'px';
+                node.style.top = y + 'px';
+                container.appendChild(node);
+
+                // Create edges
+                for (let j = i + 1; j < Math.min(i + 3, nodes); j++) {
+                    const angle2 = (j / nodes) * 2 * Math.PI;
+                    const x2 = centerX + radius * Math.cos(angle2);
+                    const y2 = centerY + radius * Math.sin(angle2);
+
+                    const edge = document.createElement('div');
+                    edge.className = 'network-edge';
+                    
+                    const dx = x2 - x;
+                    const dy = y2 - y;
+                    const length = Math.sqrt(dx * dx + dy * dy);
+                    const angleRad = Math.atan2(dy, dx);
+
+                    edge.style.width = length + 'px';
+                    edge.style.left = x + 'px';
+                    edge.style.top = y + 'px';
+                    edge.style.transform = `rotate(${angleRad}rad)`;
+                    
+                    container.appendChild(edge);
+                }
+            }
+        }
+
+        // Data Stream Simulation
+        function initDataStream() {
+            const stream = document.getElementById('dataStream');
+            if (!stream) return;
+
+            const dataTypes = [
+                { type: 'FLOOD_DETECT', value: 'Sentinel-1 SAR scan complete' },
+                { type: 'TRADE_UPDATE', value: 'Freight rate: $2,847/TEU' },
+                { type: 'DISEASE_ALERT', value: 'Dengue risk: 67% (↑12%)' },
+                { type: 'CROP_STATUS', value: 'Stress detected: 8.27% area' },
+                { type: 'PORT_STATUS', value: 'Chennai congestion: HIGH' }
+            ];
+
+            setInterval(() => {
+                if (stream.children.length > 6) {
+                    stream.removeChild(stream.firstChild);
+                }
+
+                const data = dataTypes[Math.floor(Math.random() * dataTypes.length)];
+                const item = document.createElement('div');
+                item.className = 'stream-item';
+                
+                const timestamp = new Date().toLocaleTimeString('en-US', { 
+                    hour12: false, 
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit' 
+                });
+
+                item.innerHTML = `
+                    <div class="stream-indicator"></div>
+                    <div class="stream-timestamp">${timestamp}</div>
+                    <div class="stream-value">${data.value}</div>
+                `;
+
+                stream.appendChild(item);
+            }, 2000);
         }
     </script>
 </body>
